@@ -43,6 +43,7 @@ function sendMessage(text) {
 function receiveMessage(message) {
     var line = '<p><b>' + message.from + '</b>: ' + message.text + '</p>';
     $('#chat-feed').append(line);
+    $('#chat-feed').scrollTop($('#chat-feed').height());
 }
 
 function enableChatInput() {
