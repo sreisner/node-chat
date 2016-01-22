@@ -5,9 +5,7 @@ var roomId;
 function onload() {
     socket = io();
 
-    socket.on('message', function(message) {
-        alert(message);
-    });
+    socket.on('message', receiveMessage);
 
     $(document).on('click', '.room-row', function(event) {
         var td = event.target;
@@ -40,6 +38,11 @@ function sendMessage(text) {
         'text': text,
         'room': roomId
     });
+}
+
+function receiveMessage(message) {
+    var line = '<p><b>' + message.from + '</b>: ' + message.text + '</p>';
+    $('#chat-feed').append(line);
 }
 
 function enableChatInput() {
