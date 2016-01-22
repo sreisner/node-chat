@@ -1,0 +1,13 @@
+{
+    "name": "drop-chat-server",
+    "version": "1.0.0",
+    "description": "DropChat Node.js server",
+    "author": "Shawn Reisner <shawn.reisner@gmail.com>",
+    "main": "server.js",
+    "dependencies": {
+        "express": "latest",
+        "mongodb": "latest",
+        "socket.io": "latest",
+        "mongoose": "latest"
+    }
+}

@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- JQuery -->
+        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+        <!-- Socket.IO -->
+        <script src="https://cdn.socket.io/socket.io-1.4.3.js"></script>
+
+        <!-- Google Fonts -->
+        <link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+        <!-- Custom scripts -->
+        <script src="js/home.js"></script>
+
+        <!-- Custom styles -->
+        <link rel="stylesheet" href="css/home.css" />
+    </head>
+    <body onload="onload()">
+        <div class="container">
+            <div id="brand" class="row">
+                <div id="brand-header">DropChat</div>
+                <div id="current-user" style="display: none;">Chatting as: </div>
+            </div>
+            <div id="login">
+                <div id="name-label" class="h1">Hi!  What's your name?</div>
+                <div id="name-input-group" class="input-group input-group-lg">
+                    <input id="name-input" type="text" class="form-control">
+                </div>
+            </div>
+            <div id="chat" class="row" style="display: none;">
+                <div class="col-xs-3">
+                    <div id="room-list-container">
+                        <table id="rooms" class="table table-hover">
+                            <tr>
+                                <th>Nearby Chat Rooms</th>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    <i class="fa fa-plus"></i> Create New Room
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-xs-9">
+                    <div id="chat-feed"></div>
+                    <input id="chat-text" type="text" class="form-control" disabled="true" placeholder="Select a chat room...">
+                </div>
+            </div>
+        </div>
+    </body>
+</head>
