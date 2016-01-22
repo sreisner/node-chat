@@ -5,7 +5,7 @@ body {
 
 #brand {
     height: 50px;
-    display: inline;
+    width: 100%;
     position: relative;
 }
 
