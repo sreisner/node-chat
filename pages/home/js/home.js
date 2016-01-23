@@ -15,6 +15,13 @@ function onload() {
         $('.room-row').find('i').switchClass('fa-circle', 'fa-circle-o');
         $(td).find('i').switchClass('fa-circle-o', 'fa-circle');
         roomId = $(tr).attr('data-room-id');
+
+        var url = 'http://localhost:8080/api/chat/' + roomId;
+        $.ajax({
+            dataType: "json",
+            url: url,
+            success: retrieveChatRoom
+        });
         enableChatInput();
     })
 
@@ -104,14 +111,14 @@ function retrieveRoomsInRange(position) {
     });
 }
 
-function retrieveChatRoom(button) {
-    var roomId = $(button).attr('data-room-id');
-    var url = 'http://localhost:8080/api/chat/' + roomId;
+function retrieveChatRoom(room) {
+    var url = 'http://localhost:8080/api/chat/' + room._id;
     $.ajax({
         dataType: "json",
         url: url,
         success: function(room) {
-            console.log(room.chatLog);
+            $('#chat-feed').html('');
+            room.chatLog.forEach(receiveMessage);
         }
     });
 }

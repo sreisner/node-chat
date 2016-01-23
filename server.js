@@ -40,8 +40,22 @@ app.get('/api/chat/:roomId', function(request, response) {
 });
 
 io.on('connection', function(socket) {
-    Chatroom.remove(function() {});
     socket.on('message', function(message) {
+        var roomId = message.room;
+        var chatroom = Chatroom.findOne({
+            _id: roomId
+        }, function(err, room) {
+            if(err) {
+                response.end(err);
+            }
+
+            room.chatLog.push({
+                text: message.text,
+                date: new Date(),
+                from: message.from
+            });
+            room.save();
+        });
         io.emit('message', message);
     });
 
@@ -69,18 +83,16 @@ app.get('/api/chat/discover/:latitude/:longitude', function(request, response) {
         longitude: request.params.longitude
     };
 
-    Chatroom.find({}, 'name', function(err, rooms) {
+    Chatroom.find({}, 'name location radiusMeters', function(err, rooms) {
         if(err) {
             response.end(err);
         }
         var roomsInRange = [];
         rooms.forEach(function(room) {
             var distance = helpers.distanceMeters(location, room.location);
-            // if(distance < room.radiusMeters) {
-                // TODO:  Why doesn't this show up in the json?
-                // room.distance = distance;
+            if(distance < room.radiusMeters) {
                 roomsInRange.push(room);
-            // }
+            }
         });
         response.json(roomsInRange);
     });
