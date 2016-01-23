@@ -1,11 +1,13 @@
 var name = '';
 var socket;
 var roomId;
+var latitude, longitude;
 
 function onload() {
     socket = io();
 
     socket.on('message', receiveMessage);
+    socket.on('room-create', addRoomToList);
 
     $(document).on('click', '.room-row', function(event) {
         var td = event.target;
@@ -15,6 +17,27 @@ function onload() {
         roomId = $(tr).attr('data-room-id');
         enableChatInput();
     })
+
+    $('#create-new-row').click(function(event) {
+        $('#create-new-room-modal').modal('show');
+    });
+
+    $('#create-new-room-form').submit(function() {
+        var roomName = $('#new-room-name').val();
+        var roomRadius = $('#new-room-radius').val();
+        var roomLocation = {
+            'latitude': latitude,
+            'longitude': longitude
+        };
+        socket.emit('create', {
+            'name': roomName,
+            'radiusMeters': roomRadius,
+            'location': roomLocation
+        });
+
+        $('#create-new-room-modal').modal('hide');
+        return false;
+    });
 
     $('#name-input').focus();
     $('#name-input').on('keypress', function(event) {
@@ -64,17 +87,19 @@ function login() {
     }
 }
 
+function addRoomToList(room) {
+    $('<tr class="room-row" data-room-id="' + room._id + '"><td><i class="fa fa-circle-o"></i> ' + room.name + '</td></tr>').insertBefore('#create-new-row');
+}
+
 function retrieveRoomsInRange(position) {
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
-    var url = "http://localhost:8080/api/chat/discover/" + position.coords.latitude + "/" + position.coords.longitude;
+    latitude = position.coords.latitude;
+    longitude = position.coords.longitude;
+    var url = "http://localhost:8080/api/chat/discover/" + latitude + "/" + longitude;
     $.ajax({
         dataType: "json",
         url: url,
         success: function(rooms) {
-            rooms.forEach(function(room) {
-                $('<tr class="room-row" data-room-id="' + room._id + '"><td><i class="fa fa-circle-o"></i> ' + room.name + '</td></tr>').insertAfter('#rooms > tbody > tr:first-child');
-            });
+            rooms.forEach(addRoomToList);
         }
     });
 }

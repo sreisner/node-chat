@@ -40,8 +40,26 @@ app.get('/api/chat/:roomId', function(request, response) {
 });
 
 io.on('connection', function(socket) {
+    Chatroom.remove(function() {});
     socket.on('message', function(message) {
         io.emit('message', message);
+    });
+
+    socket.on('create', function(roomData) {
+        var room = new Chatroom({
+            name: roomData.name,
+            location: roomData.location,
+            radiusMeters: roomData.radiusMeters,
+            chatLog: []
+        });
+
+        room.save(function(err) {
+            if(err) {
+                console.log(err);
+            } else {
+                io.emit('room-create', room);
+            }
+        });
     });
 });
 
