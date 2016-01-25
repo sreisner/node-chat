@@ -24,26 +24,18 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
         <!-- Custom scripts -->
-        <script src="js/home.js"></script>
+        <script src="/static/js/site.js"></script>
 
         <!-- Custom styles -->
-        <link rel="stylesheet" href="css/home.css" />
+        <link rel="stylesheet" href="/static/css/site.css" />
     </head>
     <body onload="onload()">
         <div class="container">
             <div id="brand">
                 <div id="brand-header">DropChat</div>
-                <div id="current-user" style="display: none;">Chatting as: </div>
+                <div id="current-user">{{ user.name }} <img src="{{ user.photo }}" /></div>
             </div>
-            <div id="login">
-                <div id="name-label" class="h1">Hi!  What's your name?</div>
-                <div id="name-input-group" class="input-group input-group-lg">
-                    <form id="name-form">
-                        <input id="name-input" type="text" class="form-control">
-                    </form>
-                </div>
-            </div>
-            <div id="chat" class="row" style="display: none;">
+            <div id="chat" class="row">
                 <div id="create-new-room-modal" class="modal fade" tabindex="-1" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">

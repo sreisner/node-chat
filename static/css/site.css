@@ -7,6 +7,7 @@ body {
     height: 50px;
     width: 100%;
     position: relative;
+    margin-top: 10px;
 }
 
 #brand-header {
@@ -19,6 +20,10 @@ body {
     position: absolute;
     right: 0;
     bottom: 0;
+}
+
+#chat {
+    margin-top: 10px;
 }
 
 #login {
