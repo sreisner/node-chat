@@ -38,7 +38,9 @@
             <div id="login">
                 <div id="name-label" class="h1">Hi!  What's your name?</div>
                 <div id="name-input-group" class="input-group input-group-lg">
-                    <input id="name-input" type="text" class="form-control">
+                    <form id="name-form">
+                        <input id="name-input" type="text" class="form-control">
+                    </form>
                 </div>
             </div>
             <div id="chat" class="row" style="display: none;">
@@ -79,7 +81,9 @@
                 </div>
                 <div class="col-xs-9">
                     <div id="chat-feed"></div>
-                    <input id="chat-text" type="text" class="form-control" disabled="true" placeholder="Select a chat room...">
+                    <form id="chat-form">
+                        <input id="chat-text" type="text" class="form-control" disabled="true" placeholder="Select a chat room...">
+                    </form>
                 </div>
             </div>
         </div>
