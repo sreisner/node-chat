@@ -56,7 +56,8 @@ io.on('connection', function(socket) {
             });
             room.save();
         });
-        io.emit('message', message);
+
+        io.in(roomId).emit('message', message);
     });
 
     socket.on('create', function(roomData) {
@@ -75,6 +76,14 @@ io.on('connection', function(socket) {
             }
         });
     });
+
+    socket.on('join', function(roomId) {
+        socket.join(roomId);
+    });
+
+    socket.on('leave', function(roomId) {
+        socket.leave(roomId);
+    })
 });
 
 app.get('/api/chat/discover/:latitude/:longitude', function(request, response) {

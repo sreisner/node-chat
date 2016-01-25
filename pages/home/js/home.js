@@ -5,16 +5,20 @@ var latitude, longitude;
 
 function onload() {
     socket = io();
-
-    socket.on('message', receiveMessage);
     socket.on('room-create', addRoomToList);
+    socket.on('message', receiveMessage);
 
     $(document).on('click', '.room-row', function(event) {
         var td = event.target;
         var tr = event.target.parentElement;
         $('.room-row').find('i').switchClass('fa-circle', 'fa-circle-o');
         $(td).find('i').switchClass('fa-circle-o', 'fa-circle');
+        if(roomId) {
+            socket.emit('leave', roomId);
+        }
         roomId = $(tr).attr('data-room-id');
+
+        socket.emit('join', roomId);
 
         var url = 'http://localhost:8080/api/chat/' + roomId;
         $.ajax({
@@ -22,6 +26,7 @@ function onload() {
             url: url,
             success: retrieveChatRoom
         });
+
         enableChatInput();
     })
 
