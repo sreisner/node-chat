@@ -57,7 +57,7 @@ function leaveCurrentRoom() {
 }
 
 function joinRoom(roomId) {
-    roomId = roomId;
+    this.roomId = roomId;
     socket.emit('join', roomId);
 }
 
