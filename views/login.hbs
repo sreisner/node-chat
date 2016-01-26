@@ -21,12 +21,29 @@
         <link rel="stylesheet" href="/static/css/site.css" />
     </head>
     <body>
+        <script>
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId      : '477440145790631',
+                    xfbml      : true,
+                    version    : 'v2.5'
+                });
+            };
+
+            (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        </script>
         <div class="container">
             <div id="brand">
                 <div id="brand-header">DropChat</div>
             </div>
             <div id="login">
-                <a href="/auth/facebook">Login with Facebook</a>
+                <fb:login-button scope="public_profile,email" onlogin="window.location.replace('/chat')"></fb:login-button>
             </div>
         </div>
     </body>

@@ -6,12 +6,11 @@
     "main": "server.js",
     "dependencies": {
         "express": "latest",
-        "express-session": "latest",
         "mongodb": "latest",
         "socket.io": "latest",
         "mongoose": "latest",
-        "passport": "latest",
-        "passport-facebook": "latest",
-        "express-handlebars": "latest"
+        "express-handlebars": "latest",
+        "body-parser": "latest",
+        "xmlhttprequest": "latest"
     }
 }

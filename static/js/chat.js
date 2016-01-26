@@ -1,4 +1,3 @@
-var name = '';
 var socket;
 var roomId;
 var latitude, longitude;
@@ -7,7 +6,9 @@ function onload() {
     initializeSocketIO();
     initializeEventHandlers();
 
-    $('#name-input').focus();
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(retrieveRoomsInRange);
+    }
 }
 
 function initializeSocketIO() {
@@ -21,7 +22,7 @@ function addRoomToList(room) {
 }
 
 function handleReceivedMessage(message) {
-    var line = '<p><b>' + message.from + '</b>: ' + message.text + '</p>';
+    var line = '<p><b>' + message.user.name + '</b>: ' + message.text + '</p>';
     $('#chat-feed').append(line);
     $('#chat-feed').scrollTop($('#chat-feed').height());
 }
@@ -30,7 +31,6 @@ function initializeEventHandlers() {
     $(document).on('click', '.room-row', changeRooms);
     $(document).on('click', '#create-new-row', showCreateRoomForm);
     $(document).on('submit', '#create-new-room-form', createChatRoom);
-    $(document).on('submit', '#name-form', login);
     $(document).on('submit', '#chat-form', handleChatFormSubmission);
 }
 
@@ -62,7 +62,7 @@ function joinRoom(roomId) {
 }
 
 function retrieveChatRoom() {
-    var url = 'http://localhost:8080/api/chat/' + roomId;
+    var url = 'http://test.yourdomain.com:8080/api/chat/' + roomId;
     $.ajax({
         dataType: "json",
         url: url,
@@ -99,24 +99,10 @@ function enableChatInput() {
     $('#chat-text').prop('disabled', false);
 }
 
-function login() {
-    name = $('#name-input').val();
-    if(name) {
-        $('#login').hide();
-        $('#chat').show();
-        $('#current-user').append(name);
-        $('#current-user').show();
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(retrieveRoomsInRange);
-        }
-    }
-    return false;
-}
-
 function retrieveRoomsInRange(position) {
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
-    var url = "http://localhost:8080/api/chat/discover/" + latitude + "/" + longitude;
+    var url = "http://test.yourdomain.com:8080/api/chat/discover/" + latitude + "/" + longitude;
     $.ajax({
         dataType: "json",
         url: url,
@@ -127,17 +113,53 @@ function retrieveRoomsInRange(position) {
 }
 
 function handleChatFormSubmission(event) {
-    var text = $('#chat-input').val();
-    sendMessage(text);
-    $('#chat-input').val('');
+    var text = $('#chat-text').val();
+    var token = $('#access-token').val();
+    var userId = $('#user-id').val();
+    var data = {
+        text: text,
+        accessToken: token,
+        userId: userId
+    };
+    sendMessage(data);
+    $('#chat-text').val('');
+    event.preventDefault();
 }
 
-function sendMessage(text) {
-    socket.emit('message', {
-        'from': name,
-        'text': text,
-        'room': roomId
+function sendMessage(data) {
+    var url = 'http://test.yourdomain.com:8080/api/chat/room/' + roomId;
+    $.post({
+        dataType: 'json',
+        url: url,
+        data: data,
+        success: function(response) {
+            // TODO:  Handle error (response.success, response.error).
+        }
     });
+}
+
+function handleFacebookLoginResponse(response) {
+    if(response.status === 'connected') {
+        FB.api('/me', function(me) {
+            setName(me.name);
+            setAccessToken(response.authResponse.accessToken);
+            setUserId(response.authResponse.userID);
+        });
+    } else {
+        window.location.replace('/');
+    }
+}
+
+function setName(name) {
+    $('#current-user').text(name);
+}
+
+function setAccessToken(accessToken) {
+    $('#access-token').val(accessToken);
+}
+
+function setUserId(userId) {
+    $('#user-id').val(userId);
 }
 
 function hideCreateRoomForm() {
